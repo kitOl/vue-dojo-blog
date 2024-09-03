@@ -1,50 +1,35 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <input type="text" v-model="search" />
-    <p>search tem - {{ search }}</p>
-    <div v-for="name in matchingNames" :key="name">{{ name }}</div>
-    <button @click="handleClick">stop watching</button>
+    <PostList v-if="showPosts" :posts="posts" />
+    <button @click="showPosts = !showPosts">toggle posts</button>
+    <button @click="posts.pop()">delete a post</button>
   </div>
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from 'vue';
+import PostList from '@/components/PostList.vue';
+import { ref } from 'vue';
 
 // @ is an alias to /src
 
 export default {
   name: 'HomeView',
+  components: {
+    PostList,
+  },
   setup() {
-    const search = ref('');
-    const names = ref([
-      'mario',
-      'yoshi',
-      'luigi',
-      'toad',
-      'bowser',
-      'koopa',
-      'peach',
+    const posts = ref([
+      {
+        title: 'welcome to the blog',
+        body: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure minima ut, voluptas dicta et incidunt recusandae quisquam iste repellendus assumenda, nulla vitae ducimus pariatur harum aspernatur delectus commodi dolorum deserunt ipsum, fugiat eius ea voluptatum ad sint? Sapiente, aspernatur modi quidem consequuntur porro ea. Consectetur laborum culpa quos recusandae doloremque dolore minus quis reiciendis consequatur, quisquam temporibus dolores necessitatibus commodi tenetur! Modi, libero, provident tenetur corrupti corporis, nulla nobis minima eius dignissimos inventore amet! Vero distinctio nihil corporis repudiandae sint optio ut atque maxime animi saepe qui labore aspernatur vel doloremque autem eum voluptatem earum, consequatur illo culpa incidunt repellendus!',
+        id: 1,
+      },
+      { title: 'top 5 CSS tips', body: 'lorem ipsum', id: 2 },
     ]);
+    const showPosts = ref(true);
 
-    const stopWatch = watch(search, () => {
-      console.log('watch');
-    });
-
-    const stopEffect = watchEffect(() => {
-      console.log('watchEffect', search.value);
-    });
-
-    const matchingNames = computed(() => {
-      return names.value.filter((name) => name.includes(search.value));
-    });
-
-    const handleClick = () => {
-      stopWatch();
-      stopEffect();
-    };
-
-    return { names, search, matchingNames, handleClick };
+    return { posts, showPosts };
   },
 };
 </script>
