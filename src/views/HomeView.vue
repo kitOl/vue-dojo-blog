@@ -1,33 +1,37 @@
 <template>
   <div class="home">
-    home
-    <p ref="p">My name is {{ name.toUpperCase() }} and my age is {{ age }}</p>
-    <button @click="handleClick">click me</button>
+    <h1>Home</h1>
+    <h2>Refs</h2>
+    <p>{{ ninjaOne.name }} - {{ ninjaOne.age }}</p>
+    <button @click="updateNinjaOne">Update ninja one</button>
+
+    <h2>Reactive</h2>
+    <p>{{ ninjaTwo.name }} - {{ ninjaTwo.age }}</p>
+    <button @click="updateNinjaTwo">Update ninja two</button>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 // @ is an alias to /src
 
 export default {
   name: 'HomeView',
   setup() {
-    console.log(this);
+    // const p = ref(null);
+    const ninjaOne = ref({ name: 'mario', age: 30 });
+    const ninjaTwo = reactive({ name: 'luigi', age: 35 });
 
-    const p = ref('hello');
-
-    let name = 'mario';
-    let age = 30;
-
-    const handleClick = () => {
-      console.log(p, p.value);
-      p.value.classList.add('test');
-      p.value.textContent = 'hello, ninjas';
+    const updateNinjaOne = () => {
+      ninjaOne.value.age = 40;
     };
 
-    return { name, age, handleClick, p };
+    const updateNinjaTwo = () => {
+      ninjaTwo.age = 45;
+    };
+
+    return { ninjaOne, updateNinjaOne, ninjaTwo, updateNinjaTwo };
   },
 };
 </script>
